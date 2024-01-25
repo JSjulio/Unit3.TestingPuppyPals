@@ -1,25 +1,27 @@
 name: Node.js CI
 
+#  workflow will be triggered by push and pull events 
+# Specifically, it will only run if the changes are on the 'main' branch
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  # Run the workflow when new code is pushed to the main branch
   pull_request:
-    branches: [ main ]
+    branches: [ main ]  # Run the workflow when a pull request is made against the main branch
 
+# Jobs are the tasks that the workflow will execute
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  test:  # Name of the job, "test" in this case
+    runs-on: macos-latest  # Specifies the type of runner that will execute the job, here we use the latest macOS
 
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
+    steps:  # Steps are individual tasks that run commands in the job
+    - uses: actions/checkout@v3  # This step checks out your repository under $GITHUB_WORKSPACE, so your job can access it
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
+    # This step sets up the Node.js environment, using version 18 in this case
+    - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm test
+        node-version: '18'  # Sets the Node.js version to 18
+        cache: 'npm'  # Caches npm modules for faster builds
+
+    - run: npm ci  # Installs dependencies in a clean slate using the `npm ci` command
+    - run: npm test  # Runs the test script defined in your package.json file

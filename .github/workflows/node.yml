@@ -23,4 +23,5 @@ jobs:
         node-version: '18'  # Sets the Node.js version to 18
         cache: 'npm'  # Caches npm modules for faster builds
 
+    - run: npm ci  # Installs dependencies in a clean slate using the `npm ci` command
     - run: npm test  # Runs the test script defined in your package.json file
